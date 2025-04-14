@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="Webstyle.css">
+  <link rel="icon" href="CSSICO.ico">
+  <title>Panel de Usuario</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      height: 100vh;
+      background: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085') no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      width: 300px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .login-container h2 {
+      color: white;
+    }
+
+    .login-container input {
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .login-container button {
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background-color: #ffffffcc;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #error-msg {
+      display: none;
+      color: #ff5555;
+      font-size: 14px;
+    }
+
+    #main-content {
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+      background-color: #ffffffcc;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      max-width: 700px;
+      width: 90%;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+      padding: 0;
+      margin: 0;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    section {
+      display: none;
+    }
+
+    section.active {
+      display: block;
+    }
+
+    section h1 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body> <!-- Login -->
+  <div class="login-container" id="login-container">
+   <h2>Iniciar Sesión</h2>
+   <form id="login-form">
+    <input type="text" id="username" placeholder="Usuario" required>
+    <input type="password" id="password" placeholder="Contraseña" required> <button type="submit">Entrar</button>
+   </form>
+   <p id="error-msg">Usuario o contraseña incorrectos</p>
+  </div> <!-- Contenido principal -->
+  <div id="main-content">
+   <nav>
+    <h3>Bienvenido, <span id="user-display"></span></h3>
+    <ul>
+     <li><a onclick="mostrarSeccion('inicio')">Inicio</a></li>
+     <li><a onclick="mostrarSeccion('perfil')">Perfil</a></li>
+     <li><a onclick="mostrarSeccion('config')">Configuración</a></li>
+     <li><a href="#" id="logout">Cerrar sesión</a></li>
+    </ul>
+   </nav>
+   <section id="inicio" class="active">
+    <h1>Inicio</h1>
+    <p>Bienvenido al panel principal. Aquí puedes ver información general.</p>
+   </section>
+   <section id="perfil">
+    <h1>Perfil</h1>
+    <p>Esta es la sección de perfil. Aquí podrías ver o editar tus datos personales.</p>
+   </section>
+   <section id="config">
+    <h1>Configuración</h1>
+    <p>Configuraciones del sistema o preferencias del usuario.</p>
+   </section>
+  </div>
+  <script>
+    const form = document.getElementById('login-form');
+    const loginContainer = document.getElementById('login-container');
+    const mainContent = document.getElementById('main-content');
+    const errorMsg = document.getElementById('error-msg');
+    const userDisplay = document.getElementById('user-display');
+
+    const users = {
+      'admin': '1234',
+      'vSergiors': 'vSergiors121',
+      'Venito': 'Venelson556',
+      'Lethanix': 'Lethanix165'
+    };
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value;
+
+      if (users[user] && users[user] === pass) {
+        loginContainer.style.display = 'none';
+        mainContent.style.display = 'flex';
+        userDisplay.textContent = user;
+        errorMsg.style.display = 'none';
+        mostrarSeccion('inicio');
+      } else {
+        errorMsg.style.display = 'block';
+      }
+    });
+
+    document.getElementById('logout').addEventListener('click', function() {
+      mainContent.style.display = 'none';
+      loginContainer.style.display = 'flex';
+      form.reset();
+      errorMsg.style.display = 'none';
+    });
+
+    function mostrarSeccion(id) {
+      const secciones = document.querySelectorAll('section');
+      secciones.forEach(sec => sec.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+  </script>
+</body>
+</html>
